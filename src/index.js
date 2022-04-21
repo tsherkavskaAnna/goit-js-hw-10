@@ -27,23 +27,35 @@ function onSearchInput() {
 
   fetchCountries(nameOfCountry)
   .then(renderSearch)
-  .catch(newError);
+  .catch(newError)
 
 }
 
-  function renderSearch(data) {
+  function renderSearch(countries) {
 
-    if(data.length === 1) {
-      clearInfo()
-      refs.info.insertAdjacentHTML(`beforeend`, makeCountryCard)
+    if(countries.length === 1) {
+      clearList()
+      const markup = countries.map(country => {
+        return `<img src="${country.flags.svg}" width="30"><span>${country.name}</span>
+        <p><b>Capital</b>: ${country.capital}</p>
+        <p><b>Population</b>: ${country.population}</p>
+        <p><b>Languages </b>: ${country.languages.map(data => data.name).join(`, `)}</p>`
+      })
+    .join(``);
+    refs.info.innerHTML = markup;
     }
 
-    if(data.length >= 2  && data.length <= 10) {
+    if(countries.length >= 2  && countries.length <= 10) {
       clearInfo();
-      refs.list.insertAdjacentHTML(`beforeend`, makeCountriesList)
+      const markup = countries.map(country => {
+        return `<li>
+        <img src="${country.flags.svg}" width="30"> <span>${country.name}</span></li>`
+      })
+      .join(``);
+  refs.list.innerHTML = markup;
     }
 
-    if(data.length > 10) {
+    if(countries.length > 10) {
       clearInfo();
       clearList();
       Notify.info(`Too many matches found. Please enter a more specific name.`)
@@ -52,23 +64,8 @@ function onSearchInput() {
 
 //Creare markup per 1 paese
 
-function makeCountryCard(data) {
-  const countryInfo = data
-  .map(({ flags, name, languages, population, capital }) => {
-    return `<div class="country__container">
-            <p class="img__container">
-              <img class="country__img" width='280' height='186' src='${flags.svg}'/>
-            </p>
-        <p class="country__name">${name}</p>
-        <p class="country__property">Capital: <span class="property__value">${capital}</span></p>
-        <p class="country__property">Population: <span class="property__value">${population}</span></p>
-        <p class="country__property">Languages: <span class="property__value">${languages
-          .map(element => element.name)
-          .join(', ')}</span></p>
-        </div>`;
-  })
-  .join('');
-
+function makeCountryCard(countries) {
+  
 }
 
  
@@ -76,15 +73,8 @@ function makeCountryCard(data) {
 
 // creare markup per 2-10 paese
 
-function makeCountriesList (data) {
-  const countriesList = data
-    .map(({ flags, name }) => {
-      return `<li class="list__item">
-                <p class="item__container"><img class="list__img" width='60' height='40' src='${flags.svg}'/></p>
-                <p class="list__text">${name}</p>
-          </li>`;
-    })
-    .join('');
+function makeCountriesList (countries) {
+  
 }
 
 // Errore

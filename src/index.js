@@ -62,20 +62,6 @@ function onSearchInput() {
     }
   }
 
-//Creare markup per 1 paese
-
-function makeCountryCard(countries) {
-  
-}
-
- 
-
-
-// creare markup per 2-10 paese
-
-function makeCountriesList (countries) {
-  
-}
 
 // Errore
 
